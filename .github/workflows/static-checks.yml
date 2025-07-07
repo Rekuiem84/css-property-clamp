@@ -1,0 +1,29 @@
+name: Static Analysis (Linting...)
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    check:
+        name: JavaScript and Styles
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Use Node.js 16.x
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16.x
+                  cache: npm
+
+            - name: Npm install
+              run: npm ci
+            - name: Lint JavaScript
+              run: npm run lint
+            - name: Type checking
+              run: npm run tsc
