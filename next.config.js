@@ -9,4 +9,7 @@ module.exports = withPWA({
 	compiler: {
 		emotion: true,
 	},
+	output: 'export',
+	images: { unoptimized: true },
+	trailingSlash: true,
 });

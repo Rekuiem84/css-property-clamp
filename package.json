@@ -5,6 +5,8 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
+		"export": "next export",
+		"deploy": "gh-pages -d out",
 		"postbuild": "next-sitemap && next export",
 		"build:prod": "NEXT_PUBLIC_ANALYTICS_ID=G-HFGCYQVS7W next build",
 		"postbuild:prod": "next-sitemap && next export",
@@ -32,6 +34,7 @@
 		"eslint-config-next": "13.3.1",
 		"eslint-config-prettier": "9.0.0",
 		"eslint-plugin-react": "7.33.2",
+		"gh-pages": "^6.3.0",
 		"next-pwa": "5.6.0",
 		"next-sitemap": "4.0.7",
 		"prettier": "3.2.2",
