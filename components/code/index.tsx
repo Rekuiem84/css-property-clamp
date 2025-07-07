@@ -85,14 +85,6 @@ function Code({ code }: { code: string }): JSX.Element {
 		};
 	}, [showCopySuccess]);
 
-	function handleOnClick() {
-		const selection = window.getSelection();
-
-		if (selection && ref.current) {
-			selection.selectAllChildren(ref.current);
-		}
-	}
-
 	function handleCopy() {
 		copy(code);
 		setCopySuccess(true);
@@ -100,9 +92,7 @@ function Code({ code }: { code: string }): JSX.Element {
 
 	return (
 		<Wrapper>
-			<Pre onClick={handleOnClick} ref={ref}>
-				{code}
-			</Pre>
+			<Pre ref={ref}>{code}</Pre>
 			<Button type="button" onClick={handleCopy} aria-label="Copy">
 				{showCopySuccess && <Tooltip>Copied!</Tooltip>}
 				<SVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

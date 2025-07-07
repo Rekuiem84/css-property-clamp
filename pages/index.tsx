@@ -59,10 +59,11 @@ const Settings = styled.div`
 const localStorageKey = 'clampFontSizeConfig';
 const initalConfig = {
 	root: '16',
-	minWidth: '500px',
-	maxWidth: '900px',
-	minFontSize: '16px',
-	maxFontSize: '48px',
+	minWidth: '375px',
+	maxWidth: '1300px',
+	minFontSize: '1rem',
+	maxFontSize: '4rem',
+	cssProperty: 'font-size',
 };
 
 export default function Home(): JSX.Element {
@@ -111,15 +112,19 @@ export default function Home(): JSX.Element {
 		}));
 	}
 
-	const clamp = useMemo(() => clampBuilder(config), [config]);
+	const clamp = useMemo(() => {
+		// Omit cssProperty when calling clampBuilder
+		const { cssProperty, ...clampConfig } = config;
+		return clampBuilder(clampConfig);
+	}, [config]);
 
 	return (
 		<>
 			<Head>
-				<title>Font-size clamp() generator</title>
+				<title>CSS clamp() generator</title>
 				<meta
 					name="description"
-					content="Generate linearly scale font-size with clamp()"
+					content="Generate linearly scale CSS property with clamp()"
 				/>
 			</Head>
 
@@ -127,14 +132,79 @@ export default function Home(): JSX.Element {
 				<FlexBlock>
 					<header>
 						<Text variant="title" as="h1">
-							Font-size Clamp Generator
+							CSS Clamp Generator
 						</Text>
 						<Text mt={0.5}>
-							Generate linearly scale font-size with clamp()
+							Generate linearly scale CSS property with clamp()
 						</Text>
 					</header>
 					<main>
 						<Settings>
+							<SettingsRow gap={6}>
+								<FlexBlock>
+									<label
+										htmlFor="css-property"
+										style={{
+											margin: 0,
+											fontSize: '1.5rem',
+											fontWeight: 500,
+											lineHeight: 1,
+											textAlign: 'left',
+											boxSizing: 'border-box',
+											color: 'currentColor',
+											display: 'block',
+											maxWidth: '100%',
+											zIndex: 1,
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+											paddingTop: 0,
+											paddingBottom: '0.5rem',
+										}}
+									>
+										CSS property
+									</label>
+									<input
+										id="css-property"
+										style={{
+											width: '100%',
+											height: '2.5rem',
+											fontSize: '1rem',
+											padding: '0.75rem',
+											boxSizing: 'border-box',
+											borderRadius: '4px',
+											border: '1px solid var(--border)',
+											color: 'var(--foreground)',
+											background: 'var(--background)',
+										}}
+										placeholder="CSS property (e.g. font-size, margin, padding)"
+										value={config.cssProperty}
+										type="text"
+										list="css-properties"
+										onChange={(e) =>
+											handleChange(
+												'cssProperty',
+												e.target.value,
+											)
+										}
+									/>
+									<datalist id="css-properties">
+										<option value="font-size" />
+										<option value="margin" />
+										<option value="padding" />
+										<option value="width" />
+										<option value="height" />
+										<option value="gap" />
+										<option value="column-gap" />
+										<option value="row-gap" />
+										<option value="border-radius" />
+										<option value="top" />
+										<option value="left" />
+										<option value="right" />
+										<option value="bottom" />
+									</datalist>
+								</FlexBlock>
+							</SettingsRow>
 							<SettingsRow gap={6}>
 								<FlexBlock>
 									<Input
@@ -185,13 +255,21 @@ export default function Home(): JSX.Element {
 							</SettingsRow>
 						</Settings>
 
-						<Code code={clamp ? `font-size: ${clamp};` : ' '} />
+						<Code
+							code={
+								clamp
+									? config.cssProperty.trim()
+										? `${config.cssProperty}: ${clamp};`
+										: `${clamp};`
+									: ' '
+							}
+						/>
 					</main>
 				</FlexBlock>
 			</App>
 			<Footer>
 				<a
-					href="https://github.com/walbo/font-size-clamp"
+					href="https://github.com/rekuiem84/font-size-clamp"
 					aria-label="Contribute"
 				>
 					<svg
